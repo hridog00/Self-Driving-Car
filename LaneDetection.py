@@ -117,3 +117,4 @@ if(abs(theta)<threshold):
 plt.figure()
 plt.imshow(line_image)
 plt.show()
+

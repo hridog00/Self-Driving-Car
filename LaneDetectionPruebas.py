@@ -34,13 +34,13 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
     return img, theta
 
 
-imagePath = 'image/curva3.jpeg'
+imagePath = 'image/curva4.jpg'
 im = Image.open(imagePath)
 width, height = im.size
 region_of_interest_vertices = [
-    (0, height-100),
+    (0, height),
     (0,height / 2), (width,height / 2),
-    (width, height-300),
+    (width, height),
 ]
 
 image = impimg.imread(imagePath)
@@ -63,14 +63,13 @@ plt.imshow(cropped_image)
 plt.show()
 lines = cv2.HoughLinesP(
     cropped_image,
-    rho=1,
+    rho=6,
     theta=np.pi / 60,
-    threshold=30,
-    lines=np.array([]), #donde se va a guardar
-    minLineLength=10, #longitud de cada linea
-    maxLineGap=10 #ditancia entre dos lineas
+    threshold=160,
+    lines=np.array([]),
+    minLineLength=40,
+    maxLineGap=25
 )
-print(lines)
 left_line_x = []
 left_line_y = []
 right_line_x = []
