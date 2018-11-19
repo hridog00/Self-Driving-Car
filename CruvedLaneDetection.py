@@ -290,6 +290,7 @@ def vid_pipeline(img):
     return img
 
 
+
 undistort_img()
 img = cv2.imread('camera_cal/calibration1.jpg')
 dst = undistort(img)
