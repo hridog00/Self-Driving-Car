@@ -181,14 +181,14 @@ def sliding_window(img, nwindows=9, margin=150, minpix=1, draw_windows=True):
         if len(good_right_inds) > minpix:
             rightx_current = np.int(np.mean(nonzerox[good_right_inds]))
 
-    #        if len(good_right_inds) > minpix:
-    #            rightx_current = np.int(np.mean([leftx_current +900, np.mean(nonzerox[good_right_inds])]))
-    #        elif len(good_left_inds) > minpix:
-    #            rightx_current = np.int(np.mean([np.mean(nonzerox[good_left_inds]) +900, rightx_current]))
-    #        if len(good_left_inds) > minpix:
-    #            leftx_current = np.int(np.mean([rightx_current -900, np.mean(nonzerox[good_left_inds])]))
-    #        elif len(good_right_inds) > minpix:
-    #            leftx_current = np.int(np.mean([np.mean(nonzerox[good_right_inds]) -900, leftx_current]))
+            if len(good_right_inds) > minpix:
+                rightx_current = np.int(np.mean([leftx_current +900, np.mean(nonzerox[good_right_inds])]))
+            elif len(good_left_inds) > minpix:
+                rightx_current = np.int(np.mean([np.mean(nonzerox[good_left_inds]) +900, rightx_current]))
+            if len(good_left_inds) > minpix:
+                leftx_current = np.int(np.mean([rightx_current -900, np.mean(nonzerox[good_left_inds])]))
+            elif len(good_right_inds) > minpix:
+                leftx_current = np.int(np.mean([np.mean(nonzerox[good_right_inds]) -900, leftx_current]))
 
     # Concatenate the arrays of indices
     left_lane_inds = np.concatenate(left_lane_inds)
@@ -301,9 +301,10 @@ ax1.imshow(img)
 ax1.set_title('Original Image', fontsize=30)
 ax2.imshow(dst)
 ax2.set_title('Undistorted Image', fontsize=30)
-img = cv2.imread('test_images/test_1.jpg')
+img = cv2.imread('test_images/test1.jpg')
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 dst = undistort(img)
+
 
 # Visualize undistortion
 f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,10))
@@ -311,7 +312,7 @@ ax1.imshow(img)
 ax1.set_title('Original Image', fontsize=30)
 ax2.imshow(dst)
 ax2.set_title('Undistorted Image', fontsize=30)
-img = cv2.imread('test_images/test_1.jpg')
+img = cv2.imread('test_images/test1.jpg')
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 dst = pipeline(img)
 dst = perspective_warp(dst, dst_size=(1280,720))
@@ -350,14 +351,13 @@ ax4.imshow(img_)
 
 ax4.set_title('Overlay Lanes', fontsize=20)
 plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
-
-right_curves, left_curves = [],[]
-from moviepy.editor import VideoFileClip
-
-myclip = VideoFileClip('project_video.mp4')#.subclip(40,43)
-output_vid = 'output1.mp4'
-clip = myclip.fl_image(vid_pipeline)
-clip.write_videofile(output_vid, audio=False)
-
+# right_curves, left_curves = [],[]
+# from moviepy.editor import VideoFileClip
+#
+# myclip = VideoFileClip('project_video.mp4')#.subclip(40,43)
+# output_vid = 'output1.mp4'
+# clip = myclip.fl_image(vid_pipeline)
+# clip.write_videofile(output_vid, audio=False)
+#
 
 plt.show()
