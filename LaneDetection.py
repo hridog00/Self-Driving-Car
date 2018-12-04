@@ -34,16 +34,17 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
     return img, theta
 
 
-imagePath = 'image/solidYellowCurve.jpg'
+imagePath = 'test_images/semibuena.jpg'
 im = Image.open(imagePath)
 width, height = im.size
 region_of_interest_vertices = [
     (0, height),
-    (width / 2, height / 2),
+    (0, height / 4),(width, height/4),
     (width, height),
 ]
 
-image = impimg.imread(imagePath)
+i = impimg.imread(imagePath)
+image = i[2:384, 0:5400]
 
 #printing out some stats and plotting
 print('This image is:', type(image), 'with dimensions:', image.shape)
@@ -52,10 +53,19 @@ print('This image is:', type(image), 'with dimensions:', image.shape)
 plt.figure()
 plt.imshow(image)
 
+
+
+
 gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 cannyed_image = cv2.Canny(gray_image, 100, 200)
+plt.figure()
+plt.imshow(cannyed_image)
 cropped_image = region_of_interest(cannyed_image,np.array([region_of_interest_vertices],np.int32),)
-lines = cv2.HoughLinesP(
+plt.figure()
+plt.imshow(cropped_image)
+
+
+lines1 = cv2.HoughLinesP(
     cropped_image,
     rho=6,
     theta=np.pi / 60,
@@ -64,6 +74,9 @@ lines = cv2.HoughLinesP(
     minLineLength=40,
     maxLineGap=25
 )
+
+lines = cv2.HoughLinesP(cropped_image, 6, np.pi / 60, 10, minLineLength=10, maxLineGap=30)
+
 left_line_x = []
 left_line_y = []
 right_line_x = []
