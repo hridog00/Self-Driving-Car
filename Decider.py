@@ -4,7 +4,6 @@ import numpy as np
 import cv2
 import math
 from PIL import Image
-
 def region_of_interest(img, vertices):
     # Define a blank matrix that matches the image height/width.
     mask = np.zeros_like(img)
@@ -39,7 +38,7 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
 #imagePath = 'test_images/curvaderecha.jpg'
 #imagePath = 'test_images/recta.jpg'
 #imagePath = 'test_images/semibuena.jpg'
-#imagePath = 'test_images/semicurva.jpg'
+imagePath = 'test_images/semicurva.jpg'
 
 
 
