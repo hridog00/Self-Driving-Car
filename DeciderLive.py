@@ -70,11 +70,11 @@ def valuesLeftRight(img):
 #imagePath = 'test_images/recta.jpg'
 #imagePath = 'test_images/semibuena.jpg'
 imagePath = 'test_images/semicurva.jpg'
-
+camera = picamera.PiCamera()
+time.sleep(1)
 
 while(True):
 
-    camera = picamera.PiCamera()
     im= camera.capture('img.jpg')
     # Record previous state
     camera.close()
@@ -123,7 +123,7 @@ while(True):
     else:
         print('straight')
 
-    plt.show()
+#    plt.show()
     time.sleep(1)
 #recta: 472, 381
 #curvadcha: 521, 511
