@@ -4,6 +4,18 @@ import numpy as np
 import cv2
 import math
 from PIL import Image
+
+def increase_brightness(img, value=30):
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    h, s, v = cv2.split(hsv)
+
+    lim = 255 - value
+    v[v > lim] = 255
+    v[v <= lim] += value
+
+    final_hsv = cv2.merge((h, s, v))
+    img = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
+    return img
 def region_of_interest(img, vertices):
     # Define a blank matrix that matches the image height/width.
     mask = np.zeros_like(img)
@@ -38,7 +50,7 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
 #imagePath = 'test_images/curvaderecha.jpg'
 #imagePath = 'test_images/recta.jpg'
 #imagePath = 'test_images/semibuena.jpg'
-imagePath = 'test_images/semicurva.jpg'
+imagePath = 'test_images/picture3.jpg'
 
 
 
@@ -47,7 +59,7 @@ im = Image.open(imagePath)
 width, height = im.size
 region_of_interest_vertices = [
     (0, height),
-    (0, height / 4),(width, height/4),
+    (0, height ),(width, height),
     (width, height),
 ]
 
@@ -58,28 +70,34 @@ image = i[2:384, 0:5400]
 print('This image is:', type(image), 'with dimensions:', image.shape)
 
 
-#plt.figure()
-#plt.imshow(image)
+plt.figure()
+plt.imshow(image)
 
-
-
+image = increase_brightness(image, value=80)
+plt.figure()
+plt.imshow(image)
 gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+plt.figure()
+plt.imshow(gray_image)
+
+
 cannyed_image = cv2.Canny(gray_image, 100, 200)
-#plt.figure()
-#plt.imshow(cannyed_image)
+plt.figure()
+plt.imshow(cannyed_image)
 cropped_image = region_of_interest(cannyed_image,np.array([region_of_interest_vertices],np.int32),)
 plt.figure()
-plt.imshow(cropped_image)
+plt.imshow(cannyed_image)
 size = cropped_image.shape
 #Cada 20 lineas, calcular distancia al 255 por la izquierda y por la derecha
 #izda = distizda + izda, lo mismo con la dcha (range(10, 0, -1))
 #ida/mediciones realizadas, lo mismo con la dcha
 #tomar decision
+cropped_image = cannyed_image
 muestras = 0
 dist_izda = 0
 dist_dcha = 0
-
-for i in range(200,size[0]-100, 20):
+print(size[0])
+for i in range(100,0, -10):
 
     izda = 0
     for x in (range(int(size[1]/2), 0, -1)):
@@ -104,6 +122,14 @@ dist_izda = dist_izda/muestras
 
 print(cropped_image.shape)
 print(dist_izda, dist_dcha)
+if (abs(dist_izda - dist_dcha) >= 50):
+    if (dist_izda > dist_dcha):
+        print('left')
+    else:
+        print('right')
+else:
+    print('straight')
+
 plt.show()
 
 #recta: 472, 381
