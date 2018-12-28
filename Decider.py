@@ -16,6 +16,16 @@ def increase_brightness(img, value=30):
     final_hsv = cv2.merge((h, s, v))
     img = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
     return img
+
+def increaseContrast(image, alpha, beta):
+    new_image = np.zeros(image.shape, image.dtype)
+
+    for y in range(image.shape[0]):
+        for x in range(image.shape[1]):
+            for c in range(image.shape[2]):
+                new_image[y, x, c] = np.clip(alpha * image[y, x, c] + beta, 0, 255)
+    return new_image
+
 def region_of_interest(img, vertices):
     # Define a blank matrix that matches the image height/width.
     mask = np.zeros_like(img)
@@ -50,7 +60,7 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
 #imagePath = 'test_images/curvaderecha.jpg'
 #imagePath = 'test_images/recta.jpg'
 #imagePath = 'test_images/semibuena.jpg'
-imagePath = 'test_images/picture3.jpg'
+imagePath = 'test_images/picturer0.jpg'
 
 
 
@@ -64,6 +74,8 @@ region_of_interest_vertices = [
 ]
 
 i = impimg.imread(imagePath)
+plt.figure()
+plt.imshow(i)
 image = i[2:384, 0:5400]
 
 #printing out some stats and plotting
@@ -73,7 +85,8 @@ print('This image is:', type(image), 'with dimensions:', image.shape)
 plt.figure()
 plt.imshow(image)
 
-image = increase_brightness(image, value=80)
+#image = increase_brightness(image, value=80)
+#image = increaseContrast(image, 1.0, 50)
 plt.figure()
 plt.imshow(image)
 gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
@@ -97,7 +110,7 @@ muestras = 0
 dist_izda = 0
 dist_dcha = 0
 print(size[0])
-for i in range(100,0, -10):
+for i in range(size[0]-1,200, -10):
 
     izda = 0
     for x in (range(int(size[1]/2), 0, -1)):
